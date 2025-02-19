@@ -2,6 +2,7 @@
 import Child from './Child.vue';
 import { ref, watch, watchEffect } from 'vue';
 import { computed } from 'vue';
+import Test2 from './Test2.vue';
 const child = ref('')
 const msg = 'Hello World';
 const handleClick = (childValue: string) => {
@@ -35,14 +36,16 @@ const isChange  = ref(false);
 watch([isChange],(value)=>{
     console.log(value);
 })
+
+const rawHtml = ref('<strong>This is bold text</strong>');
 watchEffect(()=>{
     console.log('isChange',isChange.value);
 })
-
+const isButtonDisabled = ref(true);
 
 </script>
 <template>
-    <Child :text='msg' @handle-click="handleClick" />
+    <!-- <Child :text='msg' @handle-click="handleClick" /> -->
 
     <!-- <button @click="changeProducts('food')">Food</button>
     <button @click="changeProducts('drink')">Drink</button>
@@ -53,6 +56,11 @@ watchEffect(()=>{
             <p>{{ p.price }}</p>
             <p>{{ p.category }}</p>
     </div> -->
+    <!-- <button @click="isChange=!isChange">Change</button> -->
+
+    <!-- <p>Using text interpolation: {{ rawHtml }}</p>
+    <p>Using v-html directive: <span v-html="rawHtml"></span></p> -->
+    <Test2 v-if="isChange"></Test2>
     <button @click="isChange=!isChange">Change</button>
 
 </template>
