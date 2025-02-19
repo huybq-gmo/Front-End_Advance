@@ -42,7 +42,7 @@ const openCreateDialog = () => {
         newId = lastStudent.student_id + 1;
     }
 
-    const formattedCode = `SV${String(newId).padStart(3, "0")}`; // Định dạng SV001, SV002, ...
+    const formattedCode = `SV${String(newId).padStart(3, "0")}`;  
 
     form.value = {
         student_id: newId,
