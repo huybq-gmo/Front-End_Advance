@@ -19,14 +19,14 @@ const searchQuery = ref("");
 const filteredStudents = computed(() => {
     if (!searchQuery.value) return students.value;
     return students.value.filter(s =>
-        s.student_name.toLowerCase().includes(searchQuery.value.toLowerCase())
+        s.student_code.toLowerCase().includes(searchQuery.value.toLowerCase())
     );
 });
 
 const showStudentCreating = ref(false);
 const isUpdate = ref(false);
 const form = ref({
-    student_id: '',
+    student_id: 0,
     name: "",
     code: "",
     address: "",
@@ -35,17 +35,28 @@ const form = ref({
 });
 
 const openCreateDialog = () => {
-    isUpdate.value = false;
+    let newId:number = 1;
+
+    if (students.value.length > 0) {
+        const lastStudent = students.value[students.value.length - 1];
+        newId = lastStudent.student_id + 1;
+    }
+
+    const formattedCode = `SV${String(newId).padStart(3, "0")}`; // Định dạng SV001, SV002, ...
+
     form.value = {
-        student_id: "",
+        student_id: newId,
         name: "",
-        code: "",
+        code: formattedCode,
         address: "",
         score: "",
         dob: "",
     };
+
+    isUpdate.value = false;
     showStudentCreating.value = true;
-}
+};
+
 
 const openUpdateDialog = (data: any) => {
     isUpdate.value = true;
@@ -133,7 +144,7 @@ const formatDate = (dateString: string): string => {
         <div class="p-4">
             <h2 class="text-center">Danh Sách Sinh Viên</h2>
             <div class="mb-3">
-                <InputText v-model="searchQuery" placeholder="Tìm kiếm theo tên..." class="w-full p-inputtext-sm" />
+                <InputText v-model="searchQuery" placeholder="Tìm kiếm theo mã sinh viên..." class="w-full p-inputtext-sm" />
                 <Button label="Create" severity="success" raised size="small" @click="openCreateDialog" />
             </div>
             <DataTable :value="filteredStudents" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20]"
@@ -169,7 +180,7 @@ const formatDate = (dateString: string): string => {
 
         <div class="mb-3">
             <label for="code" class="fw-bold">Student Code</label>
-            <InputText id="code" v-model="form.code" class="w-100" autocomplete="off" />
+            <InputText id="code" :disabled="true" v-model="form.code" class="w-100" autocomplete="off" />
             <small class="text-danger" v-if="errors.code">{{ errors.code }}</small>
         </div>
 
@@ -206,5 +217,8 @@ const formatDate = (dateString: string): string => {
 
 :deep(.p-button) {
     margin-left: 15px;
+}
+:deep(.p-inputtext) {
+    width: 20%;
 }
 </style>
