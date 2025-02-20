@@ -45,7 +45,9 @@
   import InputText from 'primevue/inputtext'
   import Password from 'primevue/password'
   import Button from 'primevue/button'
-  
+  import { useRouter } from 'vue-router'
+
+  const router = useRouter()
   const email = ref('')
   const password = ref('')
   const confirmPassword = ref('')
@@ -85,7 +87,7 @@
       errors.value.password = '';
       errors.value.email = '';
       errors.value.confirmPassword = '';
-      alert(`Registering with email: ${email.value}`)
+      router.push('/')
     }
   }
   </script>

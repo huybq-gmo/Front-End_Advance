@@ -27,7 +27,7 @@
           <Button label="Login" class="w-100 p-button-info text-white" type="submit" />
         </form>
         <div class="text-center mt-3">
-          <span>Don't have an account? <a href="#" class="text-primary">Register</a></span>
+          <span>Don't have an account? <RouterLink to="/register" class="text-primary">Register</RouterLink></span>
         </div>
       </template>
     </Card>
@@ -40,6 +40,7 @@ import Card from 'primevue/card'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
 import Button from 'primevue/button'
+import { useRouter } from 'vue-router'
 
 interface Error {
   email: string,
@@ -52,6 +53,7 @@ const errors = reactive<Error>({
   email: '',
   password: ''
 })
+const router = useRouter();
 
 const errorMessage = ref('');
 const validateForm = (): boolean => {
@@ -77,10 +79,18 @@ const validateForm = (): boolean => {
 
   return isValid;
 };
+const user ={
+  email: 'huybq@gmail.net',
+  password: "quanghuy2002"
+}
 
 const handleLogin = () => {
   if (validateForm()) {
-    alert(`Logging in with: ${email.value}`);
+    if(email.value === user.email && password.value === user.password){
+      router.push('/students');
+    } else {
+      errorMessage.value = 'Email or password is incorrect';
+    }
   }
 };
 </script>
